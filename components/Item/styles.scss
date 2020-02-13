@@ -1,0 +1,26 @@
+.item {
+  display: block;
+  border-radius: 1rem;
+  border: 1px solid #fff;
+  text-decoration: none;
+  width: 10rem;
+  height: 10rem;
+  text-align: center;
+  color: #fff;
+  background-color: #121212;
+  padding: 0.5rem;
+
+  .fa {
+    font-size: 7rem;
+  }
+
+  h4 {
+    margin-top: 0.5rem;
+  }
+
+  &:hover {
+    color: rgb(187, 134, 252);
+    border-color: rgb(187, 134, 252);
+    box-shadow: 0 0 3px 2px rgb(187, 134, 252);;
+  }
+}

@@ -1,0 +1,29 @@
+.layout {
+  display: grid;
+  min-height: 100vh;
+  background-color: rgba(40, 44, 52, 0.9);
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: 1fr auto 3fr;
+  grid-template-areas: "header header header" "left main right" "footer footer footer";
+}
+
+.content {
+  max-width: 1024;
+  grid-area: main;
+}
+
+.unsplash {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: black;
+  color: white;
+  text-decoration: none;
+  padding: 4px 6px;
+  font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Ubuntu, Roboto, Noto, "Segoe UI", Arial, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1.2;
+  display: inline-block;
+  border-radius: 3px;
+}
