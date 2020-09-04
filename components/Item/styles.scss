@@ -14,6 +14,17 @@
     font-size: 7rem;
   }
 
+  img {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+
+    &.bgWhite {
+      background-color: #fff;
+    }
+  }
+
   h4 {
     margin-top: 0.5rem;
   }

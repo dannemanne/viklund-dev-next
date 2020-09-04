@@ -17,6 +17,16 @@ class Index extends React.Component {
           <Item href="https://heroic-heritage.viklund.dev" icon="far fa-hand-pointer" text="Click / Idle Game" />
         </Grid>
 
+        <h2 style={{margin: '2rem 0 1rem'}}>Server Status</h2>
+        <Grid>
+          <Item
+            href="https://fwgp5pffti.execute-api.ap-east-1.amazonaws.com/default/getServerStatus"
+            imageSrc={"/terraria.svg"}
+            imageWhite={true}
+            text="Terraria"
+          />
+        </Grid>
+
         <h2 style={{margin: '2rem 0 1rem'}}>Other Sites</h2>
         <Grid>
           <Item href="http://www.dannemanne.com" icon="fa fa-blog" text="My Blog" />

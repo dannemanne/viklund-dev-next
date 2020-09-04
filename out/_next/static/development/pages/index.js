@@ -1,5 +1,39 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["static/development/pages/index.js"],{
 
+/***/ "./components/Grid/index.js":
+/*!**********************************!*\
+  !*** ./components/Grid/index.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _styles_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./styles.scss */ "./components/Grid/styles.scss");
+/* harmony import */ var _styles_scss__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_styles_scss__WEBPACK_IMPORTED_MODULE_1__);
+var _jsxFileName = "/Users/daniel/Programmering/viklund-dev-next/components/Grid/index.js";
+
+var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
+
+var Grid = function Grid(_ref) {
+  var children = _ref.children;
+  return __jsx("div", {
+    className: _styles_scss__WEBPACK_IMPORTED_MODULE_1___default.a.container,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 8
+    },
+    __self: this
+  }, children);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Grid);
+
+/***/ }),
+
 /***/ "./components/Item/index.js":
 /*!**********************************!*\
   !*** ./components/Item/index.js ***!
@@ -21,26 +55,46 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 var Item = function Item(_ref) {
   var href = _ref.href,
       text = _ref.text,
-      icon = _ref.icon;
+      icon = _ref.icon,
+      imageSrc = _ref.imageSrc,
+      _ref$imageWhite = _ref.imageWhite,
+      imageWhite = _ref$imageWhite === void 0 ? false : _ref$imageWhite;
+
+  function iconOrImg() {
+    if (icon) {
+      return __jsx("i", {
+        className: "".concat(icon, " ").concat(_styles_scss__WEBPACK_IMPORTED_MODULE_1___default.a.fa),
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 12
+        },
+        __self: this
+      });
+    } else if (imageSrc) {
+      return __jsx("img", {
+        src: imageSrc,
+        className: imageWhite ? _styles_scss__WEBPACK_IMPORTED_MODULE_1___default.a.bgWhite : null,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 14
+        },
+        __self: this
+      });
+    } else return null;
+  }
+
   return __jsx("a", {
     href: href,
     className: _styles_scss__WEBPACK_IMPORTED_MODULE_1___default.a.item,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 10
+      lineNumber: 20
     },
     __self: this
-  }, __jsx("i", {
-    className: "fa fa-".concat(icon, " ").concat(_styles_scss__WEBPACK_IMPORTED_MODULE_1___default.a.fa),
+  }, iconOrImg(), __jsx("h4", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 11
-    },
-    __self: this
-  }), __jsx("h4", {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 12
+      lineNumber: 22
     },
     __self: this
   }, text));
@@ -63,60 +117,38 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var next_head__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! next/head */ "./node_modules/next/dist/next-server/lib/head.js");
 /* harmony import */ var next_head__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(next_head__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _styles_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./styles.scss */ "./components/Layout/styles.scss");
+/* harmony import */ var _styles_scss__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_styles_scss__WEBPACK_IMPORTED_MODULE_3__);
 var _jsxFileName = "/Users/daniel/Programmering/viklund-dev-next/components/Layout/index.js";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
-var layoutStyle = {
-  display: "grid",
-  minHeight: '100vh',
-  backgroundColor: 'rgba(40, 44, 52, 0.9)',
-  gridTemplateColumns: '1fr auto 1fr',
-  gridTemplateRows: '1fr auto 3fr',
-  gridTemplateAreas: '"header header header" "left main right" "footer footer footer"'
-};
-var contentStyle = {
-  maxWidth: 1024,
-  gridArea: 'main'
-};
+
+
 var footerStyle = {
   gridArea: 'footer'
-};
-var unsplashStyle = {
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  backgroundColor: 'black',
-  color: 'white',
-  textDecoration: 'none',
-  padding: '4px 6px',
-  fontFamily: '-apple-system, BlinkMacSystemFont, &quot;San Francisco&quot;, &quot;Helvetica Neue&quot;, Helvetica, Ubuntu, Roboto, Noto, &quot;Segoe UI&quot;, Arial, sans-serif',
-  fontSize: '12px',
-  fontWeight: 'bold',
-  lineHeight: 1.2,
-  display: 'inline-block',
-  borderRadius: '3px'
 };
 
 var Layout = function Layout(props) {
   return __jsx("div", {
-    className: "Layout",
-    style: layoutStyle,
+    className: classnames__WEBPACK_IMPORTED_MODULE_2___default()('Layout', _styles_scss__WEBPACK_IMPORTED_MODULE_3___default.a.layout),
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 38
+      lineNumber: 12
     },
     __self: this
   }, __jsx(next_head__WEBPACK_IMPORTED_MODULE_1___default.a, {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 39
+      lineNumber: 13
     },
     __self: this
   }, __jsx("title", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 40
+      lineNumber: 14
     },
     __self: this
   }, "Viklund.dev | Sandbox"), __jsx("meta", {
@@ -124,7 +156,7 @@ var Layout = function Layout(props) {
     content: "Daniel Viklund",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 41
+      lineNumber: 15
     },
     __self: this
   }), __jsx("meta", {
@@ -132,7 +164,7 @@ var Layout = function Layout(props) {
     content: "A Sandbox for several of my personal projects",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 42
+      lineNumber: 16
     },
     __self: this
   }), __jsx("link", {
@@ -140,7 +172,7 @@ var Layout = function Layout(props) {
     href: "/favicon.ico",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 43
+      lineNumber: 17
     },
     __self: this
   }), __jsx("link", {
@@ -148,7 +180,7 @@ var Layout = function Layout(props) {
     href: "https://fonts.googleapis.com/css?family=Open+Sans",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 44
+      lineNumber: 18
     },
     __self: this
   }), __jsx("link", {
@@ -157,25 +189,24 @@ var Layout = function Layout(props) {
     href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 45
+      lineNumber: 19
     },
     __self: this
   })), __jsx("div", {
-    className: "Content",
-    style: contentStyle,
+    className: classnames__WEBPACK_IMPORTED_MODULE_2___default()('Content', _styles_scss__WEBPACK_IMPORTED_MODULE_3___default.a.content),
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 47
+      lineNumber: 21
     },
     __self: this
   }, props.children), __jsx("a", {
-    style: unsplashStyle,
+    className: _styles_scss__WEBPACK_IMPORTED_MODULE_3___default.a.unsplash,
     href: "https://unsplash.com/@markusspiske?utm_medium=referral&utm_campaign=photographer-credit&utm_content=creditBadge",
     target: "_blank",
     title: "Download free do whatever you want high-resolution photos from Markus Spiske",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 50
+      lineNumber: 24
     },
     __self: this
   }, __jsx("span", {
@@ -185,7 +216,7 @@ var Layout = function Layout(props) {
     },
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 51
+      lineNumber: 25
     },
     __self: this
   }, __jsx("svg", {
@@ -201,20 +232,20 @@ var Layout = function Layout(props) {
     viewBox: "0 0 32 32",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 52
+      lineNumber: 26
     },
     __self: this
   }, __jsx("title", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 53
+      lineNumber: 27
     },
     __self: this
   }, "unsplash-logo"), __jsx("path", {
     d: "M10 9V0h12v9H10zm12 5h10v18H0V14h10v9h12v-9z",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 54
+      lineNumber: 28
     },
     __self: this
   }))), __jsx("span", {
@@ -224,7 +255,7 @@ var Layout = function Layout(props) {
     },
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 57
+      lineNumber: 31
     },
     __self: this
   }, "Photo by Markus Spiske")));
@@ -824,6 +855,68 @@ function _typeof(obj) {
 }
 
 module.exports = _typeof;
+
+/***/ }),
+
+/***/ "./node_modules/classnames/index.js":
+/*!******************************************!*\
+  !*** ./node_modules/classnames/index.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+  Copyright (c) 2017 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+/* global define */
+
+(function () {
+	'use strict';
+
+	var hasOwn = {}.hasOwnProperty;
+
+	function classNames () {
+		var classes = [];
+
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (!arg) continue;
+
+			var argType = typeof arg;
+
+			if (argType === 'string' || argType === 'number') {
+				classes.push(arg);
+			} else if (Array.isArray(arg) && arg.length) {
+				var inner = classNames.apply(null, arg);
+				if (inner) {
+					classes.push(inner);
+				}
+			} else if (argType === 'object') {
+				for (var key in arg) {
+					if (hasOwn.call(arg, key) && arg[key]) {
+						classes.push(key);
+					}
+				}
+			}
+		}
+
+		return classes.join(' ');
+	}
+
+	if ( true && module.exports) {
+		classNames.default = classNames;
+		module.exports = classNames;
+	} else if (true) {
+		// register as 'classnames', consistent with npm package name
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function () {
+			return classNames;
+		}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {}
+}());
+
 
 /***/ }),
 
@@ -4004,7 +4097,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _components_Layout__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/Layout */ "./components/Layout/index.js");
-/* harmony import */ var _components_Item__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/Item */ "./components/Item/index.js");
+/* harmony import */ var _components_Grid__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/Grid */ "./components/Grid/index.js");
+/* harmony import */ var _components_Item__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../components/Item */ "./components/Item/index.js");
 
 
 
@@ -4012,6 +4106,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var _jsxFileName = "/Users/daniel/Programmering/viklund-dev-next/pages/index.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement;
+
 
 
 
@@ -4033,7 +4128,7 @@ function (_React$Component) {
       return __jsx(_components_Layout__WEBPACK_IMPORTED_MODULE_6__["default"], {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 9
+          lineNumber: 10
         },
         __self: this
       }, __jsx("div", {
@@ -4045,37 +4140,101 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 10
+          lineNumber: 11
         },
         __self: this
       }, __jsx("h1", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 11
+          lineNumber: 12
         },
         __self: this
       }, "My Dev Sandbox ", __jsx("small", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 11
+          lineNumber: 12
         },
         __self: this
-      }, "by Daniel Viklund (@dannemanne)"))), __jsx("div", {
+      }, "by Daniel Viklund (@dannemanne)"))), __jsx("h2", {
         style: {
-          gridArea: 'main'
+          margin: '2rem 0 1rem'
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 13
+          lineNumber: 15
         },
         __self: this
-      }, __jsx(_components_Item__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      }, "My Projects"), __jsx(_components_Grid__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 16
+        },
+        __self: this
+      }, __jsx(_components_Item__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        href: "https://heroic-heritage.viklund.dev",
+        icon: "far fa-hand-pointer",
+        text: "Click / Idle Game",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 17
+        },
+        __self: this
+      })), __jsx("h2", {
+        style: {
+          margin: '2rem 0 1rem'
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 20
+        },
+        __self: this
+      }, "Server Status"), __jsx(_components_Grid__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 21
+        },
+        __self: this
+      }, __jsx(_components_Item__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        href: "https://fwgp5pffti.execute-api.ap-east-1.amazonaws.com/default/getServerStatus",
+        imageSrc: "/terraria.svg",
+        imageWhite: true,
+        text: "Terraria",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 22
+        },
+        __self: this
+      })), __jsx("h2", {
+        style: {
+          margin: '2rem 0 1rem'
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 30
+        },
+        __self: this
+      }, "Other Sites"), __jsx(_components_Grid__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 31
+        },
+        __self: this
+      }, __jsx(_components_Item__WEBPACK_IMPORTED_MODULE_8__["default"], {
         href: "http://www.dannemanne.com",
-        icon: "blog",
+        icon: "fa fa-blog",
         text: "My Blog",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 14
+          lineNumber: 32
+        },
+        __self: this
+      }), __jsx(_components_Item__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        href: "https://wiklund.dev",
+        icon: "fas fa-user-friends",
+        text: "My Brother.dev",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 33
         },
         __self: this
       })));
