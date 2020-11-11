@@ -15,6 +15,7 @@ class Index extends React.Component {
         <h2 style={{margin: '2rem 0 1rem'}}>My Projects</h2>
         <Grid>
           <Item href="https://heroic-heritage.viklund.dev" icon="far fa-hand-pointer" text="Click / Idle Game" />
+          <Item href="https://dannemanne.pythonanywhere.com" icon="fas fa-envelope-square" text="DMARC Processor" />
         </Grid>
 
         <h2 style={{margin: '2rem 0 1rem'}}>Server Status</h2>
