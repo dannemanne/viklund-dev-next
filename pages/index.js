@@ -30,7 +30,7 @@ class Index extends React.Component {
 
         <h2 style={{margin: '2rem 0 1rem'}}>Other Sites</h2>
         <Grid>
-          <Item href="http://www.dannemanne.com" icon="fa fa-blog" text="My Blog" />
+          <Item href="https://dannemanne.com" icon="fa fa-blog" text="My Blog" />
           <Item href="https://wiklund.dev" icon="fas fa-user-friends" text="My Brother.dev" />
         </Grid>
       </Layout>
