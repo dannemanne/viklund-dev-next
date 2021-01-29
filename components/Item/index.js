@@ -1,12 +1,16 @@
+import React from 'react';
+
 import style from './styles.scss';
 
-const Item = ({
-  href,
-  text,
-  icon,
-  imageSrc,
-  imageWhite = false,
-}) => {
+const Item = (props) => {
+  const {
+    href,
+    icon,
+    imageSrc,
+    imageWhite = false,
+    text,
+  } = props;
+
   function iconOrImg() {
     if (icon) {
       return <i className={`${icon} ${style.fa}`}/>;

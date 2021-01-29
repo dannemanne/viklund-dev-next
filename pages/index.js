@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import Layout from "../components/Layout";
 import Grid from "../components/Grid";
 import Item from "../components/Item";
+import StatusItem from "../components/StatusItem";
 
-class Index extends React.Component {
+class Index extends Component {
   render() {
     return (
       <Layout>
@@ -20,11 +21,11 @@ class Index extends React.Component {
 
         <h2 style={{margin: '2rem 0 1rem'}}>Server Status</h2>
         <Grid>
-          <Item
-            href="https://fwgp5pffti.execute-api.ap-east-1.amazonaws.com/default/getServerStatus"
+          <StatusItem
             imageSrc={"/terraria.svg"}
             imageWhite={true}
             text="Terraria"
+            url="https://fwgp5pffti.execute-api.ap-east-1.amazonaws.com/default/getServerStatus"
           />
         </Grid>
 
