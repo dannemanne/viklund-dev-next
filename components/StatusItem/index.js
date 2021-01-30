@@ -11,6 +11,7 @@ const StatusItem = (props) => {
     imageWhite = false,
     serverKey,
     text,
+    updateOnlineStatus,
     url,
   } = props;
   const [status, setStatus] = useState('unknown');
@@ -32,14 +33,18 @@ const StatusItem = (props) => {
       setStatus('pending');
       try {
         const response = await axios.get(url);
-        const serverStatus = response.serverStatus[serverKey];
+        const serverStatus = response.data.serverStatus[serverKey];
 
         if (serverStatus) {
           setStatus(serverStatus.state);
           setDns(serverStatus.dns);
+          updateOnlineStatus({ serverKey, status: serverStatus.state, dns: serverStatus.dns })
+        } else {
+          updateOnlineStatus(null);
         }
       } catch(err) {
         setStatus('error');
+        updateOnlineStatus(null);
       }
     }
   };
