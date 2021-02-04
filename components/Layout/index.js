@@ -14,7 +14,7 @@ const Layout = props => (
       <title>Viklund.dev | Sandbox</title>
       <meta name="author" content="Daniel Viklund"></meta>
       <meta name="description" content="A Sandbox for several of my personal projects"></meta>
-      <link rel="shortcut icon" href="/favicon.ico"></link>
+      <link rel="shortcut icon" href="/images/favicon.ico"></link>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans" />
       <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" />
     </Head>

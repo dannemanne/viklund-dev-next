@@ -26,7 +26,13 @@ const Index = (props) => {
       
       <h2 style={{margin: '2rem 0 1rem'}}>My Projects</h2>
       <Grid>
-      <Item href="https://dannemanne.pythonanywhere.com" icon="fas fa-envelope-square" text="DMARC Processor" />
+        <Item href="https://dannemanne.pythonanywhere.com" icon="fas fa-envelope-square" text="DMARC Processor" />
+        <Item
+          href="/snok"
+          imageSrc={'/snake.svg'}
+          imageWhite={true}
+          text="Snok"
+        />
         <Item href="https://heroic-heritage.viklund.dev" icon="far fa-hand-pointer" text="Click / Idle Game" />
       </Grid>
 

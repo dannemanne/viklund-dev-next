@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 import style from './styles.scss';
 
@@ -21,10 +22,12 @@ const Item = (props) => {
   }
 
   return (
-    <a href={href} className={style.item}>
-      {iconOrImg()}
-      <h4>{text}</h4>
-    </a>
+    <Link href={href}>
+      <a className={style.item}>
+        {iconOrImg()}
+        <h4>{text}</h4>
+      </a>
+    </Link>
   );
 };
 
