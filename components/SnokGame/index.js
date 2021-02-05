@@ -13,9 +13,10 @@ const DEFAULT_SNAKE = [
   [3, 9],
 ];
 
-const draw = (ctx, { snake, boardSize }) => {
+const draw = (ctx, { snake, boardSize, target }) => {
   const { width, height} = ctx.canvas;
   const [boardW, boardH] = boardSize;
+  const [targetX, targetY] = target;
 
   const segWidth = width / boardW;
   const segHeight = height / boardH;
@@ -24,12 +25,10 @@ const draw = (ctx, { snake, boardSize }) => {
   ctx.fillStyle = '#000000'
 
   snake.map(([x,y]) => ctx.fillRect(x * segWidth, y * segHeight, segWidth, segHeight));
-}
 
-const angleToPos = (angle) => [
-  Math.round(Math.cos(angle * Math.PI / 2)),
-  Math.round(Math.sin(angle * Math.PI / 2)),
-];
+  ctx.fillStyle = '#0f0';
+  ctx.fillRect(targetX * segWidth, targetY * segHeight, segWidth, segHeight);
+}
 
 const move = (snake, dir, boardSize) => {
   const [boardW, boardH] = boardSize;
@@ -48,13 +47,41 @@ const move = (snake, dir, boardSize) => {
   return [ [nextX, nextY], ...body ];
 };
 
+const hasCollission = (snake) => {
+  const [head, ...body] = snake;
+
+  return body.some(([x,y]) => x === head[0] && y === head[1]);
+};
+
+const createTarget = (boardSize, snake) => {
+  const [boardW, boardH] = boardSize;
+  
+  const target = [
+    Math.floor(Math.random() * boardW),
+    Math.floor(Math.random() * boardH),
+  ];
+
+  const collission = snake.some(([x,y]) => x === target[0] && y === target[1]);
+
+  if (collission) {
+    return createTarget(boardSize, snake);
+  } else {
+    return target;
+  }
+};
+
+const eatTarget = (snake, target) => {
+  return snake[0][0] == target[0] && snake[0][1] == target[1];
+};
+
 const SnokGame = (props) => {
   const [snake, setSnake] = useState(DEFAULT_SNAKE)
-  const [angle, setAngle] = useState(0) // Direction angle in radians
-  const [dir, setDir] = useState(angleToPos(angle));
+  const [dir, setDir] = useState([1, 0]);
   const [buffer, setBuffer] = useState(0);
   const [speed, setSpeed] = useState(DEFAULT_SPEED)
   const [boardSize, setBoardSize] = useState(DEFAULT_BORD_SIZE);
+  const [target, setTarget] = useState(createTarget(boardSize, snake));
+  const [score, setScore] = useState(0);
 
   const canvasRef = useRef(null);
   const eventRef = useRef();
@@ -77,7 +104,22 @@ const SnokGame = (props) => {
 
     if (cycles > 0) {
       const newSnake = move(snake, dir, boardSize);
-      setSnake(newSnake);
+
+      if (hasCollission(newSnake)) {
+        setSnake(DEFAULT_SNAKE);
+        setDir([1,0]);
+        setSpeed(DEFAULT_SPEED);
+        setTarget(createTarget(boardSize, DEFAULT_SNAKE));
+
+      } else if (eatTarget(newSnake, target)) {
+        const grownSnake = [...newSnake, snake[snake.length-1]];
+        setScore(score + 10);
+        setSnake(grownSnake);
+        setTarget(createTarget(boardSize, grownSnake));
+
+      } else {
+        setSnake(newSnake);
+      }
       setBuffer(lapsed - cycles / speed);
     } else {
       setBuffer(lapsed);
@@ -88,11 +130,12 @@ const SnokGame = (props) => {
     const canvas = canvasRef.current
     const context = canvas.getContext('2d')
 
-    draw(context, { boardSize, snake });
-  }, [snake, canvasRef]);
+    draw(context, { boardSize, snake, target });
+  }, [snake, canvasRef, target]);
 
   return (
     <div className={style.container}>
+      <div>Score: {score}</div>
       <canvas ref={canvasRef} width={400} height={400} />
     </div>
   );
