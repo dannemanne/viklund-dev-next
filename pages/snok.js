@@ -52,28 +52,28 @@ const Index = (props) => {
 
         <button
           onClick={handleClickLeft}
-          style={{position: 'absolute', left: '100px', top: '172px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)'}}
+          style={{position: 'absolute', left: '100px', top: '172px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
         >
           <i className="fa fa-arrow-circle-left"/>
         </button>
 
         <button
           onClick={handleClickUp}
-          style={{position: 'absolute', left: '169px', top: '104px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)'}}
+          style={{position: 'absolute', left: '169px', top: '104px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
         >
           <i className="fa fa-arrow-circle-up"/>
         </button>
 
         <button
           onClick={handleClickRight}
-          style={{position: 'absolute', left: '238px', top: '172px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)'}}
+          style={{position: 'absolute', left: '238px', top: '172px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
         >
           <i className="fa fa-arrow-circle-right"/>
         </button>
 
         <button
           onClick={handleClickDown}
-          style={{position: 'absolute', left: '169px', top: '242px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)'}}
+          style={{position: 'absolute', left: '169px', top: '242px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
         >
           <i className="fa fa-arrow-circle-down"/>
         </button>
