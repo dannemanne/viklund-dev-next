@@ -8,12 +8,20 @@ const footerStyle = {
     gridArea: 'footer',
 };
 
-const Layout = props => (
-  <div className={classNames('Layout', style.layout)}>
+const Layout = props => {
+  const {
+    author = "Daniel Viklund",
+    description = "A Sandbox for several of my personal projects",
+    title = "Sandbox",
+    titlePrefix = "Viklund.dev",
+  } = props;
+
+  return (
+    <div className={classNames('Layout', style.layout)}>
     <Head>
-      <title>Viklund.dev | Sandbox</title>
-      <meta name="author" content="Daniel Viklund"></meta>
-      <meta name="description" content="A Sandbox for several of my personal projects"></meta>
+      <title>{titlePrefix}{' | '}{title}</title>
+      <meta name="author" content={author}/>
+      <meta name="description" content={description}></meta>
       <link rel="shortcut icon" href="/images/favicon.ico"></link>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans" />
       <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" />
@@ -31,6 +39,7 @@ const Layout = props => (
     <span style={{display:'inline-block',padding: '2px 3px'}}>Photo by Markus Spiske</span>
     </a>
   </div>
-);
+  )
+  };
 
 export default Layout;

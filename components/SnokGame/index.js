@@ -171,7 +171,6 @@ const eatTarget = (snake, target) => {
 };
 
 const handleKeyDown = ({ dir, setDir, speed, setSpeed }, e) => {
-  console.log(e.code)
   const newDir = {
     'ArrowLeft':  [-1, 0],
     'ArrowUp':    [0, -1],
