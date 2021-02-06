@@ -185,7 +185,7 @@ const eatTarget = (snake, target) => {
   return snake[0][0] == target[0] && snake[0][1] == target[1];
 };
 
-const handleKeyDown = ({ dir, setDir, speed, setSpeed, hasChangedDir, setHasChangedDir }, e) => {
+const handleKeyDown = (props, e) => {
   const newDir = {
     'ArrowLeft':  [-1, 0],
     'ArrowUp':    [0, -1],
@@ -197,9 +197,10 @@ const handleKeyDown = ({ dir, setDir, speed, setSpeed, hasChangedDir, setHasChan
     'KeyS':       [0, 1],
   }[e.code];
 
-  if (!newDir)
-    return;
+  newDir && directionPressed(props, newDir);
+}
 
+const directionPressed = ({ dir, setDir, speed, setSpeed, hasChangedDir, setHasChangedDir }, newDir) => {
   const [x,y] = dir;
   const cx = x + newDir[0];
   const cy = y + newDir[1];
@@ -216,10 +217,11 @@ const handleKeyDown = ({ dir, setDir, speed, setSpeed, hasChangedDir, setHasChan
     setDir(newDir);
     setHasChangedDir(true);
   }
-}
+};
 
 const SnokGame = (props) => {
   const {
+    ctrlRef,
     onGameOver,
     onGameUpdate,
     onStarted = null,
@@ -239,6 +241,19 @@ const SnokGame = (props) => {
   const canvasRef = useRef(null);
   const eventRef = useRef(null);
 
+  const directionProps = { dir, setDir, speed, setSpeed, hasChangedDir, setHasChangedDir };
+
+  useEffect(() => {
+    if (ctrlRef) {
+      ctrlRef.current = {
+        left:   directionPressed.bind(null, directionProps, [-1, 0]),
+        up:     directionPressed.bind(null, directionProps, [0, -1]),
+        right:  directionPressed.bind(null, directionProps, [1, 0]),
+        down:   directionPressed.bind(null, directionProps, [0, 1]),
+      };
+    }
+  }, [ctrlRef, dir, setDir, speed, setSpeed, hasChangedDir, setHasChangedDir]);
+
   useEffect(() => {
     if (!gameRunning && start) {
       setScore(0);
@@ -253,7 +268,7 @@ const SnokGame = (props) => {
   }, [start, gameRunning, onStarted]);
 
   useEffect(() => {
-    eventRef.current = handleKeyDown.bind(null, { dir, setDir, speed, setSpeed, hasChangedDir, setHasChangedDir });
+    eventRef.current = handleKeyDown.bind(null, directionProps);
     document.addEventListener('keydown', eventRef.current)
     return () => document.removeEventListener('keydown', eventRef.current);
   }, [dir, speed, hasChangedDir]);
