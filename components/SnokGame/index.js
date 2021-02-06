@@ -94,7 +94,7 @@ const draw = (ctx, { snake, boardSize, target }) => {
   body.map(([x,y], i) =>  {
     ctx.fillStyle =  i === body.length - 1 ? tailStyle : bodyStyles[i % 2];
     let startX = x * segWidth + segWidth * 0.2;
-    let startY = y * segHeight + segWidth * 0.2;
+    let startY = y * segHeight + segHeight * 0.2;
     let w = segWidth * 0.6;
     let h = segHeight * 0.6;
 
@@ -109,12 +109,12 @@ const draw = (ctx, { snake, boardSize, target }) => {
 
     } else if (prev[1] - y == 1) {
       // prev is below, just extend the height
-      h += segWidth * 0.4;
+      h += segHeight * 0.4;
 
     } else if (prev[1] - y == -1) {
       // prev is above, extend height and adjust y pos
-      h += segWidth * 0.4;
-      startY -= segWidth * 0.4;
+      h += segHeight * 0.4;
+      startY -= segHeight * 0.4;
     }
 
     ctx.fillRect(startX, startY, w, h);
@@ -125,12 +125,12 @@ const draw = (ctx, { snake, boardSize, target }) => {
       ctx.strokeStyle = '#f00';
       ctx.beginPath();
 
-      ctx.moveTo(startX, startY);
-      ctx.lineTo(startX + segWidth * 0.6, startY + segWidth * 0.6);
+      ctx.moveTo(x * segWidth, y * segHeight);
+      ctx.lineTo((x+1) * segWidth, (y+1) * segHeight);
       ctx.stroke();
 
-      ctx.moveTo(startX + segWidth * 0.6, startY);
-      ctx.lineTo(startX, startY + segWidth * 0.6);
+      ctx.moveTo((x+1) * segWidth, y * segHeight);
+      ctx.lineTo(x * segWidth, (y+1) * segHeight);
       ctx.stroke();
     }
 
