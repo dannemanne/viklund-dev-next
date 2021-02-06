@@ -8,6 +8,7 @@ const Index = (props) => {
   const [highScore, setHighScore] = useState(0);
   const [length, setLength] = useState(null);
   const [speed, setSpeed] = useState(0.001);
+  const [start, setStart] = useState(true);
 
   const handleGameUpdate = useCallback(({ score, snake, speed }) => {
     setScore(score);
@@ -17,7 +18,10 @@ const Index = (props) => {
 
   const handleGameOver = useCallback(({ score }) => {
     setHighScore(score);
+    setTimeout(() => setStart(true), 3000);
   }, []);
+
+  const handleStarted = useCallback(() => setStart(false), []);
 
   return (
     <Layout
@@ -33,6 +37,8 @@ const Index = (props) => {
       <SnokGame
         onGameOver={handleGameOver}
         onGameUpdate={handleGameUpdate}
+        onStarted={handleStarted}
+        start={start}
       />
     </Layout>
   );

@@ -119,6 +119,21 @@ const draw = (ctx, { snake, boardSize, target }) => {
 
     ctx.fillRect(startX, startY, w, h);
 
+    // Check for collission, in case we draw a red cross on top of it
+    if (x === head[0] && y === head[1]) {
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = '#f00';
+      ctx.beginPath();
+
+      ctx.moveTo(startX, startY);
+      ctx.lineTo(startX + segWidth * 0.6, startY + segWidth * 0.6);
+      ctx.stroke();
+
+      ctx.moveTo(startX + segWidth * 0.6, startY);
+      ctx.lineTo(startX, startY + segWidth * 0.6);
+      ctx.stroke();
+    }
+
     prev = [x,y];
   });
 
@@ -204,7 +219,12 @@ const handleKeyDown = ({ dir, setDir, speed, setSpeed, hasChangedDir, setHasChan
 }
 
 const SnokGame = (props) => {
-  const { onGameOver, onGameUpdate } = props;
+  const {
+    onGameOver,
+    onGameUpdate,
+    onStarted = null,
+    start = true,
+   } = props;
 
   const [snake, setSnake] = useState(DEFAULT_SNAKE)
   const [dir, setDir] = useState([1, 0]);
@@ -214,9 +234,23 @@ const SnokGame = (props) => {
   const [target, setTarget] = useState(createTarget(boardSize, snake));
   const [score, setScore] = useState(0);
   const [hasChangedDir, setHasChangedDir] = useState(false);
+  const [gameRunning, setGameRunning] = useState(false);
 
   const canvasRef = useRef(null);
   const eventRef = useRef(null);
+
+  useEffect(() => {
+    if (!gameRunning && start) {
+      setScore(0);
+      setSpeed(SPEED_INCREMENT);
+      setDir([1, 0]);
+      setSnake(DEFAULT_SNAKE);
+      setTarget(createTarget(boardSize, DEFAULT_SNAKE));
+      
+      setGameRunning(true);
+      onStarted && onStarted();
+    }
+  }, [start, gameRunning, onStarted]);
 
   useEffect(() => {
     eventRef.current = handleKeyDown.bind(null, { dir, setDir, speed, setSpeed, hasChangedDir, setHasChangedDir });
@@ -229,6 +263,8 @@ const SnokGame = (props) => {
   }, [score, snake, speed])
 
   useAnimationFrame(timeDiffMilli => {
+    if (!gameRunning) return;
+
     let lapsed = buffer + timeDiffMilli;
     let cycles = Math.floor(lapsed * speed);
 
@@ -237,11 +273,8 @@ const SnokGame = (props) => {
       setHasChangedDir(false);
 
       if (hasCollission(newSnake)) {
-        setSnake(DEFAULT_SNAKE);
-        setDir([1,0]);
-        setSpeed(SPEED_INCREMENT);
-        setTarget(createTarget(boardSize, DEFAULT_SNAKE));
-        setScore(0);
+        setSnake(newSnake);
+        setGameRunning(false);
 
         onGameOver({ score, speed, length: snake.length })
 
@@ -261,6 +294,7 @@ const SnokGame = (props) => {
   });
 
   useEffect(() => {
+
     const canvas = canvasRef.current
     const context = canvas.getContext('2d')
 
