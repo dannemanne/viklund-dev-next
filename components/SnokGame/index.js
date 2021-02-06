@@ -170,7 +170,7 @@ const eatTarget = (snake, target) => {
   return snake[0][0] == target[0] && snake[0][1] == target[1];
 };
 
-const handleKeyDown = ({ dir, setDir, speed, setSpeed }, e) => {
+const handleKeyDown = ({ dir, setDir, speed, setSpeed, hasChangedDir, setHasChangedDir }, e) => {
   const newDir = {
     'ArrowLeft':  [-1, 0],
     'ArrowUp':    [0, -1],
@@ -197,29 +197,36 @@ const handleKeyDown = ({ dir, setDir, speed, setSpeed }, e) => {
     // Pressed same direction key. No turn but speed up
     setSpeed(speed + SPEED_INCREMENT);
 
-  } else {
+  } else if (!hasChangedDir) {
     setDir(newDir);
+    setHasChangedDir(true);
   }
 }
 
 const SnokGame = (props) => {
+  const { onGameOver, onGameUpdate } = props;
+
   const [snake, setSnake] = useState(DEFAULT_SNAKE)
   const [dir, setDir] = useState([1, 0]);
   const [buffer, setBuffer] = useState(0);
   const [speed, setSpeed] = useState(SPEED_INCREMENT)
   const [boardSize, setBoardSize] = useState(DEFAULT_BORD_SIZE);
   const [target, setTarget] = useState(createTarget(boardSize, snake));
-  const [highScore, setHighScore] = useState(0);
   const [score, setScore] = useState(0);
+  const [hasChangedDir, setHasChangedDir] = useState(false);
 
   const canvasRef = useRef(null);
   const eventRef = useRef(null);
 
   useEffect(() => {
-    eventRef.current = handleKeyDown.bind(null, { dir, setDir, speed, setSpeed });
+    eventRef.current = handleKeyDown.bind(null, { dir, setDir, speed, setSpeed, hasChangedDir, setHasChangedDir });
     document.addEventListener('keydown', eventRef.current)
     return () => document.removeEventListener('keydown', eventRef.current);
-  }, [dir, speed]);
+  }, [dir, speed, hasChangedDir]);
+
+  useEffect(() => {
+    onGameUpdate({ score, snake, speed: Math.round(speed * 1000) });
+  }, [score, snake, speed])
 
   useAnimationFrame(timeDiffMilli => {
     let lapsed = buffer + timeDiffMilli;
@@ -227,14 +234,16 @@ const SnokGame = (props) => {
 
     if (cycles > 0) {
       const newSnake = move(snake, dir, boardSize);
+      setHasChangedDir(false);
 
       if (hasCollission(newSnake)) {
         setSnake(DEFAULT_SNAKE);
         setDir([1,0]);
         setSpeed(SPEED_INCREMENT);
         setTarget(createTarget(boardSize, DEFAULT_SNAKE));
-        setHighScore(score);
         setScore(0);
+
+        onGameOver({ score, speed, length: snake.length })
 
       } else if (eatTarget(newSnake, target)) {
         const grownSnake = [...newSnake, snake[snake.length-1]];
@@ -260,10 +269,6 @@ const SnokGame = (props) => {
 
   return (
     <div className={style.container}>
-      <div>High Score: {highScore}</div>
-      <div>Score: {score}</div>
-      <div>Length: {snake.length}</div>
-      <div>Speed: {Math.round(speed * 1000)}</div>
       <canvas ref={canvasRef} width={400} height={400} />
     </div>
   );
