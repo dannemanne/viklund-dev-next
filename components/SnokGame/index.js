@@ -13,7 +13,33 @@ const DEFAULT_SNAKE = [
   [3, 9],
 ];
 
-const draw = (ctx, { snake, boardSize, target }) => {
+function buildBoard({ width, height, boardSize: [boardW, boardH] }) {
+  console.log('buildBoard');
+  const boardCanvas = document.createElement('canvas');
+  boardCanvas.width = width;
+  boardCanvas.height = height;
+
+  const boardContext = boardCanvas.getContext('2d');
+
+  const segWidth = width / boardW;
+  const segHeight = height / boardH;
+
+  // Draw board
+  const checkeredStyles = ['#a2d149', '#aad751'];
+  Array(boardW).fill(null).forEach((_, x) => {
+    Array(boardH).fill(null).forEach((_, y) => {
+      const idx = (x + y) % 2;
+      boardContext.fillStyle = checkeredStyles[idx];
+
+      boardContext.fillRect(x * segWidth, y * segHeight, segWidth, segHeight);
+    });
+  });
+
+  return boardCanvas;
+}
+
+
+const draw = (ctx, { snake, boardCanvas, boardSize, target }) => {
   const { width, height} = ctx.canvas;
   const [boardW, boardH] = boardSize;
   const [targetX, targetY] = target;
@@ -22,17 +48,18 @@ const draw = (ctx, { snake, boardSize, target }) => {
   const segHeight = height / boardH;
 
   ctx.clearRect(0, 0, width, height);
+  ctx.drawImage(boardCanvas, 0, 0);
   
-  // Draw board
-  const checkeredStyles = ['#a2d149', '#aad751'];
-  Array(boardW).fill(null).forEach((_, x) => {
-    Array(boardH).fill(null).forEach((_, y) => {
-      const idx = (x + y) % 2;
-      ctx.fillStyle = checkeredStyles[idx];
+  // // Draw board
+  // const checkeredStyles = ['#a2d149', '#aad751'];
+  // Array(boardW).fill(null).forEach((_, x) => {
+  //   Array(boardH).fill(null).forEach((_, y) => {
+  //     const idx = (x + y) % 2;
+  //     ctx.fillStyle = checkeredStyles[idx];
 
-      ctx.fillRect(x * segWidth, y * segHeight, segWidth, segHeight);
-    });
-  });
+  //     ctx.fillRect(x * segWidth, y * segHeight, segWidth, segHeight);
+  //   });
+  // });
 
   // Draw the snake
   const bodyStyles = ['rgb(44, 69, 13)', 'rgb(95, 142, 37)'];
@@ -308,13 +335,20 @@ const SnokGame = (props) => {
     }
   });
 
+  const boardRef = useRef(null);
   useEffect(() => {
+    const canvas = canvasRef.current
+    const { width, height } = canvas;
 
+    boardRef.current = buildBoard({ boardSize, height, width });
+  }, [boardSize, canvasRef.current])
+
+  useEffect(() => {
     const canvas = canvasRef.current
     const context = canvas.getContext('2d')
 
-    draw(context, { boardSize, snake, target });
-  }, [snake, canvasRef, target]);
+    draw(context, { boardCanvas: boardRef.current, boardSize, snake, target });
+  }, [boardRef.current, snake, canvasRef, target]);
 
   return (
     <div className={style.container}>
