@@ -28,10 +28,10 @@ const Index = (props) => {
       <Grid>
         <Item href="https://dannemanne.pythonanywhere.com" icon="fas fa-envelope-square" text="DMARC Processor" />
         <Item
-          href="/snok"
+          href="/snoken"
           imageSrc={'/snake.svg'}
           imageWhite={true}
-          text="Snok"
+          text="Snoken"
         />
         <Item href="https://heroic-heritage.viklund.dev" icon="far fa-hand-pointer" text="Click / Idle Game" />
       </Grid>

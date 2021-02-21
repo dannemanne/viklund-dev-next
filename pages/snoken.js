@@ -3,7 +3,7 @@ import Snoken from "snoken";
 
 import Layout from "../components/Layout";
 
-const Index = (props) => {
+const SnokenIndex = (props) => {
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [length, setLength] = useState(null);
@@ -100,4 +100,4 @@ const Index = (props) => {
   );
 };
 
-export default Index;
+export default SnokenIndex;
