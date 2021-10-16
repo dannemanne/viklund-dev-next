@@ -20,5 +20,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "snoken": "^1.0.0"
+  },
+  "devDependencies": {
+    "sass-loader": "^10.0.2"
   }
 }
