@@ -33,7 +33,6 @@ const Index = (props) => {
           imageWhite={true}
           text="Snoken"
         />
-        <Item href="https://heroic-heritage.viklund.dev" icon="far fa-hand-pointer" text="Click / Idle Game" />
       </Grid>
 
       <h2 style={{margin: '2rem 0 1rem'}}>Server Status</h2>
