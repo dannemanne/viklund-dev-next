@@ -1,5 +1,6 @@
-const withSass = require('@zeit/next-sass');
-module.exports = withSass({
-  cssModules: true,
-  resolve: { symlinks: false },
-});
+module.exports = {
+  compiler: {
+    // Enables the styled-components SWC transform
+    styledComponents: true
+  }
+};

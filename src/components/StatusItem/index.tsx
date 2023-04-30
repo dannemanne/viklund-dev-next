@@ -1,10 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import axios from 'axios';
-import classNames from 'classnames';
+import Item from '../Item';
 
-import style from './styles.scss';
+type Props = {
+  icon: string;
+  imageSrc: string;
+  imageWhite?: boolean;
+  serverKey: string;
+  text: string;
+  updateOnlineStatus: (params: any) => void;
+  url: string;
+};
 
-const StatusItem = (props) => {
+const StatusItem: React.FC<Props> = (props) => {
   const {
     icon,
     imageSrc,
@@ -17,16 +25,9 @@ const StatusItem = (props) => {
   const [status, setStatus] = useState('unknown');
   const [dns, setDns] = useState(null);
 
-  function iconOrImg() {
-    if (icon) {
-      return <i className={`${icon} ${style.fa}`}/>;
-    } else if (imageSrc) {
-      return <img src={imageSrc} />;
-    } else
-      return null;
-  }
-
-  const handleClick = async (e) => {
+  const handleClick = useCallback<
+    (e: React.MouseEvent<HTMLElement>) => void
+  >(async (e) => {
     e.preventDefault();
 
     if (status !== 'pending') {
@@ -47,17 +48,17 @@ const StatusItem = (props) => {
         updateOnlineStatus(null);
       }
     }
-  };
+  }, [serverKey, status, url]);
 
   return (
-    <a
-      className={`${style.item} ${style[status]}`}
-      href={'#'}
+    <Item
+      icon={icon}
+      imageSrc={imageSrc}
+      imageWhite={imageWhite}
       onClick={handleClick}
-    >
-      {iconOrImg()}
-      <h4>{text}</h4>
-    </a>
+      status={status}
+      text={text}
+    />
   );
 };
 
