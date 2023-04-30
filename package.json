@@ -7,21 +7,24 @@
     "dev": "next",
     "build": "next build",
     "export": "next export",
-    "start": "next start"
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
   },
   "author": "Daniel Viklund",
   "license": "ISC",
   "dependencies": {
-    "@zeit/next-sass": "^1.0.1",
     "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "next": "^9.5.5",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
-    "snoken": "^1.0.0"
+    "snoken": "^1.0.0",
+    "styled-components": "^5.3.10"
   },
   "devDependencies": {
-    "node-sass": "^4.0.1",
-    "sass-loader": "^10.0.2"
+    "@types/node": "^18.16.3",
+    "@types/react": "^18.2.0",
+    "@types/styled-components": "^5.1.26",
+    "typescript": "^5.0.4"
   }
 }

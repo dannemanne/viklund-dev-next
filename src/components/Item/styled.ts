@@ -1,4 +1,19 @@
-.item {
+import styled from "styled-components";
+
+export const Fa = styled.i`
+  font-size: 7rem;
+`;
+
+export const Image = styled.img<{ isWhite?: boolean; }>`
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+
+  ${({ isWhite = false }) => isWhite && "background-color: #fff;"}
+`;
+
+export const Item = styled.a`
   display: block;
   border-radius: 1rem;
   border: 1px solid #fff;
@@ -9,18 +24,16 @@
   color: #fff;
   background-color: #121212;
   padding: 0.5rem;
-  outline: none;
-
-  .fa {
-    font-size: 7rem;
-  }
 
   img {
     width: 110px;
     height: 110px;
     object-fit: cover;
     border-radius: 0.5rem;
-    background-color: rgb(255, 255, 255);
+
+    &.bgWhite {
+      background-color: #fff;
+    }
   }
 
   h4 {
@@ -68,4 +81,4 @@
       background-color: rgb(55, 218, 123);
     }    
   }
-}
+`;
