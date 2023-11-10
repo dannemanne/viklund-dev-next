@@ -20,9 +20,11 @@ export default async function handler (req, res) {
     if (address) {
       console.log('set', userId, address)
       await alliance.setUserIdentifiers(userId, { walletAddress: address });
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
     console.log('start', userId)
     await alliance.startGame(userId);
+    await alliance.flush();
     res.status(200).send({ success: true });
   } catch (err) {
     console.log('error', err);

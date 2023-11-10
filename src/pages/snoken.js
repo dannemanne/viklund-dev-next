@@ -29,6 +29,19 @@ const SnokenIndex = (props) => {
     setUserId(localUserId);
   }, []);
 
+  const handleClickUpdateWallet = useCallback(() => {
+    let localUserId = localStorage.getItem('snoken-user-id');
+    if (!localUserId) {
+      localUserId = crypto.randomUUID();
+      localStorage.setItem('snoken-user-id', localUserId);
+    }
+    const address = prompt("Enter your wallet address to identify your account");
+
+    axios.post("/api/snoken/start", { userId: localUserId, address }).catch(() => {});
+
+    setUserId(localUserId);
+  }, []);
+
   const handleGameUpdate = useCallback((event) => {
     if (length && event.snake.length > length) {
       axios.post("/api/snoken/track", { userId, event: 'KILL', groupId, traits: { mob: 'apple', speed } }).catch(() => {});
@@ -93,12 +106,14 @@ const SnokenIndex = (props) => {
         </svg>
       </a>
 
-      <div className={''}>
+      <div className={''} style={{marginBottom: '1rem'}}>
         <div>High Score: {highScore}</div>
         <div>Score: {score}</div>
         <div>Length: {length}</div>
         <div>Speed: {speed}</div>
+        <div><button onClick={handleClickUpdateWallet}>Update Account Wallet</button></div>
       </div>
+
       <div style={{position: 'relative', height: '400px', width: '400px'}}>
         <Snoken
           ctrlRef={ctrlRef}
