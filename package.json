@@ -13,11 +13,12 @@
   "author": "Daniel Viklund",
   "license": "ISC",
   "dependencies": {
+    "@earnalliance/node": "^0.0.12",
     "axios": "^0.21.1",
     "classnames": "^2.2.6",
-    "next": "^9.5.5",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
+    "next": "^12.3.4",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "snoken": "^1.0.0",
     "styled-components": "^5.3.10"
   },
