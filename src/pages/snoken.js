@@ -1,4 +1,5 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 import Snoken from "snoken";
 
 import Layout from "../components/Layout";
@@ -8,22 +9,54 @@ const SnokenIndex = (props) => {
   const [highScore, setHighScore] = useState(0);
   const [length, setLength] = useState(null);
   const [speed, setSpeed] = useState(0.001);
-  const [start, setStart] = useState(true);
+  const [start, setStart] = useState(false);
+  const [groupId, setGroupId] = useState(null);
+  const [isRunning, setIsRunning] = useState(false);
+  const [userId, setUserId] = useState(null);
 
-  const handleGameUpdate = useCallback(({ score, snake, speed }) => {
-    setScore(score);
-    setLength(snake.length);
-    setSpeed(speed);
+  useEffect(() => {
+    let localUserId = localStorage.getItem('snoken-user-id');
+    let address;
+    
+    if (!localUserId) {
+      localUserId = crypto.randomUUID();
+      localStorage.setItem('snoken-user-id', localUserId);
+      address = prompt("Enter your wallet address to identify your account");
+    }
+
+    axios.post("/api/snoken/start", { userId: localUserId, address }).catch(() => {});
+
+    setUserId(localUserId);
   }, []);
 
-  const handleGameOver = useCallback(({ score }) => {
+  const handleGameUpdate = useCallback((event) => {
+    if (length && event.snake.length > length) {
+      axios.post("/api/snoken/track", { userId, event: 'KILL', groupId, traits: { mob: 'apple', speed } }).catch(() => {});
+    }
+    setScore(event.score);
+    setLength(event.snake.length);
+    setSpeed(event.speed);
+  }, [length, groupId]);
+
+  const handleGameOver = useCallback(async ({ score }) => {
+    setIsRunning(false);
+    setGroupId(null);
+
+    try {
+      await axios.post("/api/snoken/track", { userId, event: 'GAME_SCORE', value: score, groupId });
+    } catch (err) {
+      console.log(err)
+    }
+
     if (score > highScore) {
       setHighScore(score);
     }
-    setTimeout(() => setStart(true), 3000);
-  }, [highScore]);
+  }, [highScore, userId, groupId]);
 
-  const handleStarted = useCallback(() => setStart(false), []);
+  const handleStarted = useCallback(() => {
+    setStart(false);
+    setIsRunning(true);
+  }, []);
 
   const ctrlRef = useRef(null);
 
@@ -31,6 +64,13 @@ const SnokenIndex = (props) => {
   const handleClickUp     = useCallback(() => ctrlRef.current && ctrlRef.current.up(), [ctrlRef]);
   const handleClickRight  = useCallback(() => ctrlRef.current && ctrlRef.current.right(), [ctrlRef]);
   const handleClickDown   = useCallback(() => ctrlRef.current && ctrlRef.current.down(), [ctrlRef]);
+
+  const handleClickStart = useCallback(() => {
+    const uuid = crypto.randomUUID();
+    setGroupId(uuid);
+
+    setStart(true);
+  }, []);
 
   return (
     <Layout
@@ -68,33 +108,44 @@ const SnokenIndex = (props) => {
           start={start}
         />
 
-        <button
-          onClick={handleClickLeft}
-          style={{position: 'absolute', left: '100px', top: '172px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
-        >
-          <i className="fa fa-arrow-circle-left"/>
-        </button>
+        {isRunning ? (
+          <>
+            <button
+              onClick={handleClickLeft}
+              style={{position: 'absolute', left: '100px', top: '172px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
+            >
+              <i className="fa fa-arrow-circle-left"/>
+            </button>
 
-        <button
-          onClick={handleClickUp}
-          style={{position: 'absolute', left: '169px', top: '104px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
-        >
-          <i className="fa fa-arrow-circle-up"/>
-        </button>
+            <button
+              onClick={handleClickUp}
+              style={{position: 'absolute', left: '169px', top: '104px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
+            >
+              <i className="fa fa-arrow-circle-up"/>
+            </button>
 
-        <button
-          onClick={handleClickRight}
-          style={{position: 'absolute', left: '238px', top: '172px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
-        >
-          <i className="fa fa-arrow-circle-right"/>
-        </button>
+            <button
+              onClick={handleClickRight}
+              style={{position: 'absolute', left: '238px', top: '172px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
+            >
+              <i className="fa fa-arrow-circle-right"/>
+            </button>
 
-        <button
-          onClick={handleClickDown}
-          style={{position: 'absolute', left: '169px', top: '242px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
-        >
-          <i className="fa fa-arrow-circle-down"/>
-        </button>
+            <button
+              onClick={handleClickDown}
+              style={{position: 'absolute', left: '169px', top: '242px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
+            >
+              <i className="fa fa-arrow-circle-down"/>
+            </button>
+          </>
+        ) : (
+          <button
+            onClick={handleClickStart}
+            style={{position: 'absolute', left: '180px', top: '180px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,128,0,1)', outline: 'none', cursor: 'pointer'}}
+          >
+            <i className="fa fa-play-circle"/>
+          </button>
+        )}
       </div>
     </Layout>
   );
