@@ -3,6 +3,8 @@ import axios from 'axios';
 import Snoken from "snoken";
 
 import Layout from "../components/Layout";
+import { Box, Button, Center, Flex } from '@chakra-ui/react';
+import { StatRow } from '../components/StatRow'
 
 const SnokenIndex = (props) => {
   const [score, setScore] = useState(0);
@@ -89,6 +91,9 @@ const SnokenIndex = (props) => {
     <Layout
       description={'Snok (a type of snake in Sweden) is my take on the classical mobile game Snake'}
       title={'Snok'}
+      backgroundImage="/images/grassy-fields.jpg"
+      backgroundSize="cover"
+      backgroundPosition="center"
     >
       <a
         href="https://github.com/dannemanne/snoken"
@@ -106,62 +111,69 @@ const SnokenIndex = (props) => {
         </svg>
       </a>
 
-      <div className={''} style={{marginBottom: '1rem'}}>
-        <div>High Score: {highScore}</div>
-        <div>Score: {score}</div>
-        <div>Length: {length}</div>
-        <div>Speed: {speed}</div>
-        <div><button onClick={handleClickUpdateWallet}>Update Account Wallet</button></div>
-      </div>
+      <Center flexDir="column" mt="10" gap="4">
+        <Flex bg="gray.800" borderColor="gray.900" borderWidth="1px" borderRadius="md" w="440px">
+          <Box flex="1">
+            <StatRow label="High Score" value={highScore} />
+            <StatRow label="Score" value={score} />
+            <StatRow label="Length" value={length} />
+            <StatRow label="Speed" value={speed} />
+          </Box>
 
-      <div style={{position: 'relative', height: '400px', width: '400px'}}>
-        <Snoken
-          ctrlRef={ctrlRef}
-          onGameOver={handleGameOver}
-          onGameUpdate={handleGameUpdate}
-          onStarted={handleStarted}
-          start={start}
-        />
+          <Flex flex="1" p="4" flexDir="column" alignItems="flex-end">
+            <Button size="sm" onClick={handleClickUpdateWallet}>Update Account Wallet</Button>
+          </Flex>
+        </Flex>
 
-        {isRunning ? (
-          <>
+        <Center position='relative' height='440px' width='440px' bg="gray.900" borderRadius="md">
+          <Snoken
+            ctrlRef={ctrlRef}
+            onGameOver={handleGameOver}
+            onGameUpdate={handleGameUpdate}
+            onStarted={handleStarted}
+            start={start}
+          />
+
+          {isRunning ? (
+            <>
+              <button
+                onClick={handleClickLeft}
+                style={{position: 'absolute', left: '100px', top: '172px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
+              >
+                <i className="fa fa-arrow-circle-left"/>
+              </button>
+
+              <button
+                onClick={handleClickUp}
+                style={{position: 'absolute', left: '169px', top: '104px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
+              >
+                <i className="fa fa-arrow-circle-up"/>
+              </button>
+
+              <button
+                onClick={handleClickRight}
+                style={{position: 'absolute', left: '238px', top: '172px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
+              >
+                <i className="fa fa-arrow-circle-right"/>
+              </button>
+
+              <button
+                onClick={handleClickDown}
+                style={{position: 'absolute', left: '169px', top: '242px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
+              >
+                <i className="fa fa-arrow-circle-down"/>
+              </button>
+            </>
+          ) : (
             <button
-              onClick={handleClickLeft}
-              style={{position: 'absolute', left: '100px', top: '172px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
+              onClick={handleClickStart}
+              style={{position: 'absolute', left: '180px', top: '180px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,128,0,1)', outline: 'none', cursor: 'pointer'}}
             >
-              <i className="fa fa-arrow-circle-left"/>
+              <i className="fa fa-play-circle"/>
             </button>
-
-            <button
-              onClick={handleClickUp}
-              style={{position: 'absolute', left: '169px', top: '104px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
-            >
-              <i className="fa fa-arrow-circle-up"/>
-            </button>
-
-            <button
-              onClick={handleClickRight}
-              style={{position: 'absolute', left: '238px', top: '172px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
-            >
-              <i className="fa fa-arrow-circle-right"/>
-            </button>
-
-            <button
-              onClick={handleClickDown}
-              style={{position: 'absolute', left: '169px', top: '242px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
-            >
-              <i className="fa fa-arrow-circle-down"/>
-            </button>
-          </>
-        ) : (
-          <button
-            onClick={handleClickStart}
-            style={{position: 'absolute', left: '180px', top: '180px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,128,0,1)', outline: 'none', cursor: 'pointer'}}
-          >
-            <i className="fa fa-play-circle"/>
-          </button>
-        )}
-      </div>
+          )}
+        </Center>
+      </Center>
     </Layout>
   );
 };

@@ -1,10 +1,8 @@
 import type React from "react";
 import Head from "next/head";
-import * as S from "./styled";
-
-const footerStyle = {
-    gridArea: 'footer',
-};
+import { Box, Flex, FlexProps } from "@chakra-ui/react";
+import Nav from "../Nav";
+import Footer from "../Footer";
 
 type Props = {
   author?: string;
@@ -12,7 +10,7 @@ type Props = {
   description?: string;
   title?: string;
   titlePrefix?: string;
-};
+} & FlexProps;
 
 const Layout: React.FC<Props> = (props) => {
   const {
@@ -21,12 +19,13 @@ const Layout: React.FC<Props> = (props) => {
     description = "A Sandbox for several of my personal projects",
     title = "Sandbox",
     titlePrefix = "Viklund.dev",
+    ...rest
   } = props;
 
   return (
-    <S.Container>
+    <Flex flexDir="column" minH="100vh" {...rest}>
       <Head>
-        <title>{titlePrefix}{' | '}{title}</title>
+        <title>{`${titlePrefix} | ${title}`}</title>
         <meta name="author" content={author}/>
         <meta name="description" content={description}></meta>
         <link rel="shortcut icon" href="/images/favicon.ico"></link>
@@ -34,25 +33,15 @@ const Layout: React.FC<Props> = (props) => {
         <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" />
       </Head>
 
-      <S.Content>
-        {children}
-      </S.Content>
+      <Nav />
 
-      <S.Unsplash
-        href="https://unsplash.com/@markusspiske?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge"
-        target="_blank"
-        title="Download free do whatever you want high-resolution photos from Markus Spiske"
-      >
-        <span>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-            <title>unsplash-logo</title>
-            <path d="M10 9V0h12v9H10zm12 5h10v18H0V14h10v9h12v-9z"></path>
-            </svg>
-        </span>
-        <span>Photo by Markus Spiske</span>
-      </S.Unsplash>
-    </S.Container>
+      <Box flex="1">
+        {children}
+      </Box>
+
+      <Footer />
+    </Flex>
   )
-  };
+};
 
 export default Layout;

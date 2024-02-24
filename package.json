@@ -13,19 +13,24 @@
   "author": "Daniel Viklund",
   "license": "ISC",
   "dependencies": {
+    "@chakra-ui/react": "^2.8.2",
     "@earnalliance/node": "^0.0.12",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
     "axios": "^0.21.1",
     "classnames": "^2.2.6",
+    "framer-motion": "^11.0.6",
     "next": "^12.3.4",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "snoken": "^1.0.0",
-    "styled-components": "^5.3.10"
+    "next-transpile-modules": "^10.0.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "snoken": "^1.0.3",
+    "styled-components": "^5.3.10",
+    "typescript": "^5.3.3"
   },
   "devDependencies": {
     "@types/node": "^18.16.3",
     "@types/react": "^18.2.0",
-    "@types/styled-components": "^5.1.26",
-    "typescript": "^5.0.4"
+    "@types/styled-components": "^5.1.26"
   }
 }
