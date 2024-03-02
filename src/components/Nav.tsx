@@ -1,29 +1,29 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Text, Flex, Spacer, Image } from '@chakra-ui/react';
+import React from 'react';
+import { Flex, Spacer, Image } from '@chakra-ui/react';
 import Link from 'next/link';
  
 const Nav = () => {
-  const [scroll, setScroll] = useState(false);
+  // const [scroll, setScroll] = useState(false);
  
-  const changeScroll = useCallback(() => {
-    if (typeof document === 'undefined') return;
+  // const changeScroll = useCallback(() => {
+  //   if (typeof document === 'undefined') return;
 
-    document.body.scrollTop > 80 || document.documentElement.scrollTop > 80
-      ? setScroll(true)
-      : setScroll(false);
-    }, []);
+  //   document.body.scrollTop > 80 || document.documentElement.scrollTop > 80
+  //     ? setScroll(true)
+  //     : setScroll(false);
+  //   }, []);
 
-    useEffect(() => {
-      window.addEventListener('scroll', changeScroll);
-      return () => window.removeEventListener('scroll', changeScroll);
-    }, [changeScroll]);
+  //   useEffect(() => {
+  //     window.addEventListener('scroll', changeScroll);
+  //     return () => window.removeEventListener('scroll', changeScroll);
+  //   }, [changeScroll]);
   
   return (
     <Flex
       h="16"
       alignItems="center"
       p="6"
-      boxShadow={scroll ? 'base' : 'none'}
+      // boxShadow={scroll ? 'base' : 'none'}
       position="sticky"
       top="0"
       zIndex="sticky"
@@ -32,9 +32,7 @@ const Nav = () => {
       bg="blackAlpha.500"
     >
       <Link href="/">
-        <a>
-          <Image src="/images/logo-no-background.png" alt="Logo" height="10" />
-        </a>
+        <Image src="/images/logo-no-background.png" alt="Logo" height="10" />
       </Link>
  
       <Spacer />

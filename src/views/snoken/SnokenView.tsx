@@ -1,20 +1,25 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+"use client";
+
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
-import Snoken from "snoken";
+import Snoken, { Control } from "snoken";
 
-import Layout from "../components/Layout";
-import { Box, Button, Center, Flex } from '@chakra-ui/react';
-import { StatRow } from '../components/StatRow'
+import Layout from "../../components/Layout";
+import { Box, Button, Center, Flex, Select } from '@chakra-ui/react';
+import { StatRow } from '../../components/StatRow'
+import { GameBoard } from './types';
+import { boardConfigs } from './constants';
 
-const SnokenIndex = (props) => {
+export const SnokenView: FC = () => {
+  const [board, setBoard] = useState(GameBoard.GrassyFields);
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
-  const [length, setLength] = useState(null);
+  const [length, setLength] = useState(3);
   const [speed, setSpeed] = useState(0.001);
   const [start, setStart] = useState(false);
-  const [groupId, setGroupId] = useState(null);
+  const [groupId, setGroupId] = useState<string | null>(null);
   const [isRunning, setIsRunning] = useState(false);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
     let localUserId = localStorage.getItem('snoken-user-id');
@@ -44,7 +49,11 @@ const SnokenIndex = (props) => {
     setUserId(localUserId);
   }, []);
 
-  const handleGameUpdate = useCallback((event) => {
+  const handleGameUpdate = useCallback<(params: {
+    score: number;
+    snake: any;
+    speed: number;
+  }) => void>((event) => {
     if (length && event.snake.length > length) {
       axios.post("/api/snoken/track", { userId, event: 'KILL', groupId, traits: { mob: 'apple', speed } }).catch(() => {});
     }
@@ -53,7 +62,11 @@ const SnokenIndex = (props) => {
     setSpeed(event.speed);
   }, [length, groupId]);
 
-  const handleGameOver = useCallback(async ({ score }) => {
+  const handleGameOver = useCallback<(params: {
+    score: number;
+    speed: number;
+    length: number;
+  }) => void>(async ({ score }) => {
     setIsRunning(false);
     setGroupId(null);
 
@@ -73,12 +86,12 @@ const SnokenIndex = (props) => {
     setIsRunning(true);
   }, []);
 
-  const ctrlRef = useRef(null);
+  const ctrlRef = useRef<Control | null>(null);
 
-  const handleClickLeft   = useCallback(() => ctrlRef.current && ctrlRef.current.left(), [ctrlRef]);
-  const handleClickUp     = useCallback(() => ctrlRef.current && ctrlRef.current.up(), [ctrlRef]);
-  const handleClickRight  = useCallback(() => ctrlRef.current && ctrlRef.current.right(), [ctrlRef]);
-  const handleClickDown   = useCallback(() => ctrlRef.current && ctrlRef.current.down(), [ctrlRef]);
+  const handleClickLeft   = useCallback(() => ctrlRef.current?.left(), [ctrlRef]);
+  const handleClickUp     = useCallback(() => ctrlRef.current?.up(), [ctrlRef]);
+  const handleClickRight  = useCallback(() => ctrlRef.current?.right(), [ctrlRef]);
+  const handleClickDown   = useCallback(() => ctrlRef.current?.down(), [ctrlRef]);
 
   const handleClickStart = useCallback(() => {
     const uuid = crypto.randomUUID();
@@ -91,7 +104,7 @@ const SnokenIndex = (props) => {
     <Layout
       description={'Snok (a type of snake in Sweden) is my take on the classical mobile game Snake'}
       title={'Snok'}
-      backgroundImage="/images/grassy-fields.jpg"
+      backgroundImage={boardConfigs[board]?.backgroundImage}
       backgroundSize="cover"
       backgroundPosition="center"
     >
@@ -122,11 +135,17 @@ const SnokenIndex = (props) => {
 
           <Flex flex="1" p="4" flexDir="column" alignItems="flex-end">
             <Button size="sm" onClick={handleClickUpdateWallet}>Update Account Wallet</Button>
+            <Select value={board} onChange={(evt) => setBoard(evt.target.value as GameBoard)}>
+              {Object.entries(GameBoard).map(([key, value]) => (
+                <option key={key} value={value}>{value}</option>
+              ))}
+            </Select>
           </Flex>
         </Flex>
 
         <Center position='relative' height='440px' width='440px' bg="gray.900" borderRadius="md">
           <Snoken
+            boardPainterOptions={{colors: boardConfigs[board]?.colors}}
             ctrlRef={ctrlRef}
             onGameOver={handleGameOver}
             onGameUpdate={handleGameUpdate}
@@ -167,7 +186,7 @@ const SnokenIndex = (props) => {
           ) : (
             <button
               onClick={handleClickStart}
-              style={{position: 'absolute', left: '180px', top: '180px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,128,0,1)', outline: 'none', cursor: 'pointer'}}
+              style={{position: 'absolute', zIndex: 1, left: '180px', top: '180px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,128,0,1)', outline: 'none', cursor: 'pointer'}}
             >
               <i className="fa fa-play-circle"/>
             </button>
@@ -177,5 +196,3 @@ const SnokenIndex = (props) => {
     </Layout>
   );
 };
-
-export default SnokenIndex;

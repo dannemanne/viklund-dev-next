@@ -1,13 +1,8 @@
-import { getAllianceClient } from "../../../services/alliance";
+import { getAllianceClient } from "../../../../services/alliance";
 
-export default async function handler (req, res) {
-  const { event, groupId, traits, userId, value } = req.body;
+export async function POST(request: Request) {
+  const { event, groupId, traits, userId, value } = await request.json();
   const alliance = getAllianceClient();
-
-  if (req.method !== "POST") {
-    res.status(405);
-    return;
-  }
 
   const errors = [];
   if (typeof event !== "string") { errors.push('Invalid event'); }
@@ -16,8 +11,7 @@ export default async function handler (req, res) {
   if (!(typeof traits === "object" || typeof traits === "undefined")) { errors.push('Invalid traits'); }
   if (typeof userId !== "string") { errors.push('Invalid userId'); }
   if (errors.length) {
-    res.status(403).send({ errors });
-    return;
+    return Response.json({ errors }, { status: 403 });
   }
 
   try {
@@ -26,9 +20,9 @@ export default async function handler (req, res) {
     await sdk.track(userId, event, value, traits);
     await alliance.flush();
 
-    res.status(200).send({ success: true });
+    return Response.json({ success: true });
   } catch (err) {
     console.log('error', err);
-    res.status(500).send({ error: "failed" });
+    return Response.json({ error: "failed" }, { status: 500 });
   }
 }
