@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Box,
   Button,
@@ -37,19 +39,17 @@ const Hero: FC = () => {
         </Text>
  
         <Link href="/snoken">
-          <a>
-            <Button
-              as="span"
-              w="200px"
-              colorScheme="blue"
-              variant="solid"
-              h="50px"
-              size={isLargerThan62 ? 'lg' : 'md'}
-              mb={isLargerThan62 ? '0' : '10'}
-            >
-              PLAY NOW
-            </Button>
-          </a>
+          <Button
+            as="span"
+            w="200px"
+            colorScheme="blue"
+            variant="solid"
+            h="50px"
+            size={isLargerThan62 ? 'lg' : 'md'}
+            mb={isLargerThan62 ? '0' : '10'}
+          >
+            PLAY NOW
+          </Button>
         </Link>
       </Box>
  

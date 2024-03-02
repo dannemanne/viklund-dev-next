@@ -3,7 +3,7 @@ import { FC } from "react";
 
 type Props = {
   label: string;
-  value: string;
+  value: number;
 }
 
 export const StatRow: FC<Props> = ({ label, value }) => {
@@ -17,5 +17,4 @@ export const StatRow: FC<Props> = ({ label, value }) => {
       </Box>
     </Flex>
   );;
-
 }

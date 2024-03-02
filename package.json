@@ -13,6 +13,7 @@
   "author": "Daniel Viklund",
   "license": "ISC",
   "dependencies": {
+    "@auth0/auth0-react": "^2.2.4",
     "@chakra-ui/react": "^2.8.2",
     "@earnalliance/node": "^0.0.12",
     "@emotion/react": "^11.11.3",
@@ -20,11 +21,11 @@
     "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "framer-motion": "^11.0.6",
-    "next": "^12.3.4",
+    "next": "^14.1.0",
     "next-transpile-modules": "^10.0.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "snoken": "^1.0.3",
+    "snoken": "^1.0.5",
     "styled-components": "^5.3.10",
     "typescript": "^5.3.3"
   },
