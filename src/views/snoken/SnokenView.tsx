@@ -5,13 +5,16 @@ import axios from 'axios';
 import Snoken, { Control } from "snoken";
 
 import Layout from "../../components/Layout";
-import { Box, Button, Center, Flex, Select } from '@chakra-ui/react';
+import { AbsoluteCenter, Box, Button, Center, Flex, Input, InputGroup, InputLeftAddon, Select, useDimensions } from '@chakra-ui/react';
 import { StatRow } from '../../components/StatRow'
-import { GameBoard } from './types';
-import { boardConfigs } from './constants';
+import { EnumSnake, GameBoard } from './types';
+import { boardConfigs, snakeConfigs } from './constants';
+import { StartGameModal } from './StartGameModal';
+import { maskMiddleText, targetPainterEarnAlliance } from './utils';
 
 export const SnokenView: FC = () => {
   const [board, setBoard] = useState(GameBoard.GrassyFields);
+  const [snake, setSnake] = useState(EnumSnake.Natrix);
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [length, setLength] = useState(3);
@@ -20,33 +23,32 @@ export const SnokenView: FC = () => {
   const [groupId, setGroupId] = useState<string | null>(null);
   const [isRunning, setIsRunning] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const elementRef = useRef<HTMLDivElement>(null)
+  const dimensions = useDimensions(elementRef, true)
 
   useEffect(() => {
     let localUserId = localStorage.getItem('snoken-user-id');
-    let address;
-    
+
     if (!localUserId) {
       localUserId = crypto.randomUUID();
       localStorage.setItem('snoken-user-id', localUserId);
-      address = prompt("Enter your wallet address to identify your account");
     }
 
-    axios.post("/api/snoken/start", { userId: localUserId, address }).catch(() => {});
+    const walletAddress = localStorage.getItem('snoken-user-wallet-address');
+    if (walletAddress) {
+      setWalletAddress(walletAddress);
+    }
 
     setUserId(localUserId);
   }, []);
 
-  const handleClickUpdateWallet = useCallback(() => {
+  const handleChangeWalletAddress = useCallback((address: string) => {
     let localUserId = localStorage.getItem('snoken-user-id');
-    if (!localUserId) {
-      localUserId = crypto.randomUUID();
-      localStorage.setItem('snoken-user-id', localUserId);
-    }
-    const address = prompt("Enter your wallet address to identify your account");
-
+    setWalletAddress(address);
+    localStorage.setItem('snoken-user-wallet-address', address);
     axios.post("/api/snoken/start", { userId: localUserId, address }).catch(() => {});
-
-    setUserId(localUserId);
   }, []);
 
   const handleGameUpdate = useCallback<(params: {
@@ -55,7 +57,7 @@ export const SnokenView: FC = () => {
     speed: number;
   }) => void>((event) => {
     if (length && event.snake.length > length) {
-      axios.post("/api/snoken/track", { userId, event: 'KILL', groupId, traits: { mob: 'apple', speed } }).catch(() => {});
+      // axios.post("/api/snoken/track", { userId, event: 'KILL', groupId, traits: { mob: 'apple', speed } }).catch(() => {});
     }
     setScore(event.score);
     setLength(event.snake.length);
@@ -71,7 +73,7 @@ export const SnokenView: FC = () => {
     setGroupId(null);
 
     try {
-      await axios.post("/api/snoken/track", { userId, event: 'GAME_SCORE', value: score, groupId });
+      await axios.post("/api/snoken/track", { userId, event: 'GAME_SCORE', value: score, groupId, traits: { board, snake, length } });
     } catch (err) {
       console.log(err)
     }
@@ -79,7 +81,7 @@ export const SnokenView: FC = () => {
     if (score > highScore) {
       setHighScore(score);
     }
-  }, [highScore, userId, groupId]);
+  }, [board, highScore, snake, userId, groupId]);
 
   const handleStarted = useCallback(() => {
     setStart(false);
@@ -97,8 +99,10 @@ export const SnokenView: FC = () => {
     const uuid = crypto.randomUUID();
     setGroupId(uuid);
 
+    setIsOpen(false);
     setStart(true);
-  }, []);
+    axios.post("/api/snoken/track", { userId, event: 'GAME_START', groupId: uuid, traits: { board, snake } }).catch(() => {});
+  }, [board, snake, userId]);
 
   return (
     <Layout
@@ -125,7 +129,7 @@ export const SnokenView: FC = () => {
       </a>
 
       <Center flexDir="column" mt="10" gap="4">
-        <Flex bg="gray.800" borderColor="gray.900" borderWidth="1px" borderRadius="md" w="440px">
+        <Flex bg="gray.800" borderColor="gray.900" borderWidth="1px" borderRadius="md" maxW="640px" w="full" flexDir={{base: 'column', md: 'row'}}>
           <Box flex="1">
             <StatRow label="High Score" value={highScore} />
             <StatRow label="Score" value={score} />
@@ -133,63 +137,130 @@ export const SnokenView: FC = () => {
             <StatRow label="Speed" value={speed} />
           </Box>
 
-          <Flex flex="1" p="4" flexDir="column" alignItems="flex-end">
-            <Button size="sm" onClick={handleClickUpdateWallet}>Update Account Wallet</Button>
-            <Select value={board} onChange={(evt) => setBoard(evt.target.value as GameBoard)}>
-              {Object.entries(GameBoard).map(([key, value]) => (
-                <option key={key} value={value}>{value}</option>
-              ))}
-            </Select>
+          <Flex flex="1" p="4" flexDir="column" alignItems="flex-end" gap="2">
+            <InputGroup>
+              <InputLeftAddon w="120px">
+                Wallet
+              </InputLeftAddon>
+              <Input value={maskMiddleText(walletAddress)} disabled />
+            </InputGroup>
+
+            <InputGroup>
+              <InputLeftAddon w="120px">
+                Game Board
+              </InputLeftAddon>
+              <Input value={board} disabled />
+            </InputGroup>
+
+            <InputGroup>
+              <InputLeftAddon w="120px">
+                Snake
+              </InputLeftAddon>
+              <Input value={snake} disabled />
+            </InputGroup>
           </Flex>
         </Flex>
 
-        <Center position='relative' height='440px' width='440px' bg="gray.900" borderRadius="md">
-          <Snoken
-            boardPainterOptions={{colors: boardConfigs[board]?.colors}}
-            ctrlRef={ctrlRef}
-            onGameOver={handleGameOver}
-            onGameUpdate={handleGameUpdate}
-            onStarted={handleStarted}
-            start={start}
-          />
+        <Center ref={elementRef} position='relative' aspectRatio={1} maxW='640px' w="full" borderColor="gray.900" borderWidth="16px" borderRadius="md">
+          <AbsoluteCenter bg={boardConfigs[board]?.colors?.[0]}>
+            <Snoken
+              boardPainterOptions={{colors: boardConfigs[board]?.colors}}
+              ctrlRef={ctrlRef}
+              height={dimensions?.contentBox.height || 400}
+              onGameOver={handleGameOver}
+              onGameUpdate={handleGameUpdate}
+              onStarted={handleStarted}
+              snakePainter={snakeConfigs[snake]?.painter}
+              snakePainterOptions={snakeConfigs[snake]?.painterOptions}
+              start={start}
+              targetPainter={targetPainterEarnAlliance}
+              width={dimensions?.contentBox.width || 400}
+            />
+          </AbsoluteCenter>
 
           {isRunning ? (
-            <>
-              <button
+            <AbsoluteCenter display="grid" gridTemplateColumns="1fr 1fr 1fr" gridTemplateRows="1fr 1fr 1fr" gridTemplateAreas={`
+            "tl tc tr"
+            "ml mc mr"
+            "bl bc br"
+            `}>
+              <Button
+                variant="unstyled"
+                gridArea="ml"
+                fontSize="3rem"
+                color={"rgba(0,0,0,0.2)"}
+                _active={{color: 'rgba(0,0,0,0.5)'}}
+                height={"12"}
+                lineHeight="100%"
                 onClick={handleClickLeft}
-                style={{position: 'absolute', left: '100px', top: '172px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
               >
                 <i className="fa fa-arrow-circle-left"/>
-              </button>
+              </Button>
 
-              <button
+              <Button
+                variant="unstyled"
+                gridArea="tc"
+                fontSize="3rem"
+                color={"rgba(0,0,0,0.2)"}
+                _active={{color: 'rgba(0,0,0,0.5)'}}
+                height={"12"}
+                lineHeight="100%"
                 onClick={handleClickUp}
-                style={{position: 'absolute', left: '169px', top: '104px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
               >
                 <i className="fa fa-arrow-circle-up"/>
-              </button>
+              </Button>
 
-              <button
+              <Button
+                variant="unstyled"
+                gridArea="mr"
+                fontSize="3rem"
+                color={"rgba(0,0,0,0.2)"}
+                _active={{color: 'rgba(0,0,0,0.5)'}}
+                height={"12"}
+                lineHeight="100%"
                 onClick={handleClickRight}
-                style={{position: 'absolute', left: '238px', top: '172px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
               >
                 <i className="fa fa-arrow-circle-right"/>
-              </button>
+              </Button>
 
-              <button
+              <Button
+                variant="unstyled"
+                gridArea="bc"
+                fontSize="3rem"
+                color={"rgba(0,0,0,0.2)"}
+                height={"12"}
+                lineHeight="100%"
                 onClick={handleClickDown}
-                style={{position: 'absolute', left: '169px', top: '242px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,0,0,0.2)', outline: 'none'}}
+                _active={{color: 'rgba(0,0,0,0.5)'}}
               >
                 <i className="fa fa-arrow-circle-down"/>
-              </button>
-            </>
+              </Button>
+            </AbsoluteCenter>
           ) : (
-            <button
-              onClick={handleClickStart}
-              style={{position: 'absolute', zIndex: 1, left: '180px', top: '180px', background: 'none', border: 'none', fontSize: '3rem', color: 'rgba(0,128,0,1)', outline: 'none', cursor: 'pointer'}}
+            <Button
+              variant="unstyled"
+              fontSize="3rem"
+              color={"rgba(0,64,0,1)"}
+              height={"12"}
+              lineHeight="100%"
+              onClick={() => setIsOpen(true)}
+              _active={{color: 'rgba(0,64,0,0.8)'}}
             >
               <i className="fa fa-play-circle"/>
-            </button>
+            </Button>
+          )}
+
+          {isOpen && (
+            <StartGameModal
+              gameBoard={board}
+              onChangeGameBoard={setBoard}
+              onChangeSnake={setSnake}
+              onChangeWalletAddress={handleChangeWalletAddress}
+              onClickStart={handleClickStart}
+              onClose={() => setIsOpen(false)}
+              snake={snake}
+              walletAddress={walletAddress}
+            />
           )}
         </Center>
       </Center>
