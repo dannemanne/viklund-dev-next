@@ -13,7 +13,7 @@ export const StatRow: FC<Props> = ({ label, value }) => {
         <Text>{label}</Text>
       </Box>
       <Box flex="1">
-        <Text>{value}</Text>
+        <Text textAlign="right">{value}</Text>
       </Box>
     </Flex>
   );;
