@@ -18,7 +18,7 @@
     "@earnalliance/node": "^0.0.12",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "axios": "^0.21.1",
+    "axios": "^0.28.0",
     "classnames": "^2.2.6",
     "framer-motion": "^11.0.6",
     "next": "^14.1.0",
