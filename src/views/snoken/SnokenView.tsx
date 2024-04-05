@@ -5,7 +5,7 @@ import axios from 'axios';
 import Snoken, { Control } from "snoken";
 
 import Layout from "../../components/Layout";
-import { AbsoluteCenter, Box, Button, Center, Flex, Input, InputGroup, InputLeftAddon, Select, useDimensions } from '@chakra-ui/react';
+import { AbsoluteCenter, Box, Button, Center, Flex, Image, Input, InputGroup, InputLeftAddon, Select, useDimensions } from '@chakra-ui/react';
 import { StatRow } from '../../components/StatRow'
 import { EnumSnake, GameBoard } from './types';
 import { boardConfigs, snakeConfigs } from './constants';
@@ -119,7 +119,7 @@ export const SnokenView: FC = () => {
       >
         <svg
           width="80" height="80" viewBox="0 0 250 250"
-          style={{fill: '#fff', color: '#151513', position: 'absolute', top: 0, border: 0, right: 0}}
+          style={{fill: '#fff', color: '#151513', position: 'absolute', top: 0, border: 0, right: 0, zIndex: 10000}}
           aria-hidden="true"
         >
           <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
@@ -129,6 +129,8 @@ export const SnokenView: FC = () => {
       </a>
 
       <Center flexDir="column" mt="10" gap="4">
+        <Image src="/images/snoken.svg" maxW="360px" mb="4" alt="SNOKEN" />
+
         <Flex bg="gray.800" borderColor="gray.900" borderWidth="1px" borderRadius="md" maxW="640px" w="full" flexDir={{base: 'column', md: 'row'}}>
           <Box flex="1">
             <StatRow label="High Score" value={highScore} />

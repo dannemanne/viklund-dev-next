@@ -26,13 +26,14 @@ const Hero: FC = () => {
       flexDirection={isLargerThan62 ? 'row' : 'column'}
     >
       <Box mr={isLargerThan62 ? '6' : '0'} w={isLargerThan62 ? '60%' : 'full'}>
-        <Text
+        <Image src="/images/snoken.svg" maxW="480px" mb="4" />
+        {/* <Text
           fontSize={isLargerThan62 ? '5xl' : '4xl'}
           fontWeight="bold"
           mb="4"
         >
           Snoken
-        </Text>
+        </Text> */}
  
         <Text mb="6" fontSize={isLargerThan62 ? 'lg' : 'base'} opacity={0.7}>
           An old classic with a twist. What are you waiting for?
