@@ -135,7 +135,7 @@ export const SnokenView: FC = () => {
         <Image src="/images/snoken.svg" maxW="360px" mb="4" alt="SNOKEN" />
 
         <Flex bg="gray.800" borderColor="gray.900" borderWidth="1px" borderRadius="md" maxW="640px" w="full" flexDir={{base: 'column', md: 'row'}}>
-          <Box flex="1">
+          <Box flex="1" order={{base: '2', lg: '1'}}>
             <StatRow label="High Score" value={highScore} />
             <StatRow label="Score" value={score} />
             <StatRow label="Length" value={length} />
@@ -146,7 +146,7 @@ export const SnokenView: FC = () => {
             </Text>
           </Box>
 
-          <Flex flex="1" p="4" flexDir="column" alignItems="flex-end" gap="2">
+          <Flex flex="1" p="4" flexDir="column" alignItems="flex-end" gap="2" order={{base: '1', lg: '2'}}>
             <InputGroup>
               <InputLeftAddon w="120px">
                 Wallet
@@ -187,65 +187,7 @@ export const SnokenView: FC = () => {
             />
           </AbsoluteCenter>
 
-          {isRunning ? (
-            <AbsoluteCenter display="grid" gridTemplateColumns="1fr 1fr 1fr" gridTemplateRows="1fr 1fr 1fr" gridTemplateAreas={`
-            "tl tc tr"
-            "ml mc mr"
-            "bl bc br"
-            `}>
-              <Button
-                variant="unstyled"
-                gridArea="ml"
-                fontSize="3rem"
-                color={"rgba(0,0,0,0.2)"}
-                _active={{color: 'rgba(0,0,0,0.5)'}}
-                height={"12"}
-                lineHeight="100%"
-                onClick={handleClickLeft}
-              >
-                <i className="fa fa-arrow-circle-left"/>
-              </Button>
-
-              <Button
-                variant="unstyled"
-                gridArea="tc"
-                fontSize="3rem"
-                color={"rgba(0,0,0,0.2)"}
-                _active={{color: 'rgba(0,0,0,0.5)'}}
-                height={"12"}
-                lineHeight="100%"
-                onClick={handleClickUp}
-              >
-                <i className="fa fa-arrow-circle-up"/>
-              </Button>
-
-              <Button
-                variant="unstyled"
-                gridArea="mr"
-                fontSize="3rem"
-                color={"rgba(0,0,0,0.2)"}
-                _active={{color: 'rgba(0,0,0,0.5)'}}
-                height={"12"}
-                lineHeight="100%"
-                onClick={handleClickRight}
-              >
-                <i className="fa fa-arrow-circle-right"/>
-              </Button>
-
-              <Button
-                variant="unstyled"
-                gridArea="bc"
-                fontSize="3rem"
-                color={"rgba(0,0,0,0.2)"}
-                height={"12"}
-                lineHeight="100%"
-                onClick={handleClickDown}
-                _active={{color: 'rgba(0,0,0,0.5)'}}
-              >
-                <i className="fa fa-arrow-circle-down"/>
-              </Button>
-            </AbsoluteCenter>
-          ) : (
+          {isRunning ? null : (
             <Button
               variant="unstyled"
               fontSize="3rem"
@@ -272,6 +214,70 @@ export const SnokenView: FC = () => {
             />
           )}
         </Center>
+
+        <Flex bg="gray.800" borderColor="gray.900" borderWidth="1px" flex="1" borderRadius="md" maxW="640px" w="full" flexDir="column" order={{base: '2', lg: '1'}}>
+          <Center aspectRatio="1" p="4" alignSelf="center" display="grid" gridTemplateColumns="1fr 1fr 1fr" gridTemplateRows="1fr 1fr 1fr" gridTemplateAreas={`
+            "tl tc tr"
+            "ml mc mr"
+            "bl bc br"
+          `}>
+            <Button
+              variant="unstyled"
+              gridArea="ml"
+              fontSize="3rem"
+              color={"rgba(255,255,255,0.8)"}
+              _active={{color: 'rgba(255,255,255,0.5)'}}
+              height={"12"}
+              lineHeight="100%"
+              onClick={handleClickLeft}
+            >
+              <i className="fa fa-arrow-circle-left"/>
+            </Button>
+
+            <Button
+              variant="unstyled"
+              gridArea="tc"
+              fontSize="3rem"
+              color={"rgba(255,255,255,0.8)"}
+              _active={{color: 'rgba(255,255,255,0.5)'}}
+              height={"12"}
+              lineHeight="100%"
+              onClick={handleClickUp}
+            >
+              <i className="fa fa-arrow-circle-up"/>
+            </Button>
+
+            <Button
+              variant="unstyled"
+              gridArea="mr"
+              fontSize="3rem"
+              color={"rgba(255,255,255,0.8)"}
+              _active={{color: 'rgba(255,255,255,0.5)'}}
+              height={"12"}
+              lineHeight="100%"
+              onClick={handleClickRight}
+            >
+              <i className="fa fa-arrow-circle-right"/>
+            </Button>
+
+            <Button
+              variant="unstyled"
+              gridArea="bc"
+              fontSize="3rem"
+              color={"rgba(255,255,255,0.8)"}
+              _active={{color: 'rgba(255,255,255,0.5)'}}
+              height={"12"}
+              lineHeight="100%"
+              onClick={handleClickDown}
+            >
+              <i className="fa fa-arrow-circle-down"/>
+            </Button>
+          </Center>
+
+          <Text px="2" fontSize="sm" color="gray.400" mb="2" fontStyle="italic">
+            Control the snake with W, A, S, D, the arrow keys or the buttons above. Collect the targets to grow and earn points. Avoid hitting yourself.
+          </Text>
+        </Flex>
       </Center>
     </Layout>
   );
