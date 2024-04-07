@@ -16,11 +16,23 @@ export const targetPainterEarnAlliance: TargetPainter = (
     image = new Image();
     image.src = "/images/earn_alliance.svg";
   }
+
+  ctx.fillStyle = "#0F0A2F";
+  ctx.beginPath();
+  ctx.roundRect(
+    targetX * segWidth + segWidth * 0.1,
+    targetY * segHeight + segWidth * 0.1,
+    segWidth * 0.8,
+    segHeight * 0.8,
+    4
+  );
+  ctx.fill();
+
   ctx.drawImage(image, 
-    targetX * segWidth + segWidth / 8,
-    targetY * segHeight + segWidth / 8,
-    segWidth,
-    segHeight
+    targetX * segWidth + segWidth * 0.2,
+    targetY * segHeight + segWidth * 0.2,
+    segWidth * 0.8,
+    segHeight * 0.8
   );
 };
 

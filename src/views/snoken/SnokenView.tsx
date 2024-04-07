@@ -5,7 +5,7 @@ import axios from 'axios';
 import Snoken, { Control } from "snoken";
 
 import Layout from "../../components/Layout";
-import { AbsoluteCenter, Box, Button, Center, Flex, Image, Input, InputGroup, InputLeftAddon, Select, useDimensions } from '@chakra-ui/react';
+import { AbsoluteCenter, Box, Button, Center, Flex, Image, Input, InputGroup, InputLeftAddon, Select, Text, useDimensions } from '@chakra-ui/react';
 import { StatRow } from '../../components/StatRow'
 import { EnumSnake, GameBoard } from './types';
 import { boardConfigs, snakeConfigs } from './constants';
@@ -19,6 +19,7 @@ export const SnokenView: FC = () => {
   const [highScore, setHighScore] = useState(0);
   const [length, setLength] = useState(3);
   const [speed, setSpeed] = useState(0.001);
+  const [totalMoves, setTotalMoves] = useState(0);
   const [start, setStart] = useState(false);
   const [groupId, setGroupId] = useState<string | null>(null);
   const [isRunning, setIsRunning] = useState(false);
@@ -55,6 +56,7 @@ export const SnokenView: FC = () => {
     score: number;
     snake: any;
     speed: number;
+    totalMoves: number;
   }) => void>((event) => {
     if (length && event.snake.length > length) {
       // axios.post("/api/snoken/track", { userId, event: 'KILL', groupId, traits: { mob: 'apple', speed } }).catch(() => {});
@@ -62,6 +64,7 @@ export const SnokenView: FC = () => {
     setScore(event.score);
     setLength(event.snake.length);
     setSpeed(event.speed);
+    setTotalMoves(event.totalMoves);
   }, [length, groupId]);
 
   const handleGameOver = useCallback<(params: {
@@ -137,6 +140,10 @@ export const SnokenView: FC = () => {
             <StatRow label="Score" value={score} />
             <StatRow label="Length" value={length} />
             <StatRow label="Speed" value={speed} />
+            <StatRow label="Moves" value={totalMoves} />
+            <Text px="2" fontSize="sm" color="gray.400" mb="2" fontStyle="italic">
+              You get more points by going faster, but the points for each target are reduced for each move you make.
+            </Text>
           </Box>
 
           <Flex flex="1" p="4" flexDir="column" alignItems="flex-end" gap="2">
