@@ -98,12 +98,17 @@ export const SnokenView: FC = () => {
   const handleClickRight  = useCallback(() => ctrlRef.current?.right(), [ctrlRef]);
   const handleClickDown   = useCallback(() => ctrlRef.current?.down(), [ctrlRef]);
 
+  const hasStartedFirstGameRef = useRef(false);
   const handleClickStart = useCallback(() => {
     const uuid = crypto.randomUUID();
     setGroupId(uuid);
 
     setIsOpen(false);
     setStart(true);
+    if (!hasStartedFirstGameRef.current) {
+      axios.post("/api/snoken/start", { userId, address: walletAddress }).catch(() => {});
+      hasStartedFirstGameRef.current = true;
+    }
     axios.post("/api/snoken/track", { userId, event: 'GAME_START', groupId: uuid, traits: { board, snake } }).catch(() => {});
   }, [board, snake, userId]);
 
